@@ -1,0 +1,11 @@
+django
+djangorestframework
+pandas
+scikit-learn
+xgboost
+joblib
+django-cors-headers
+tensorflow
+gunicorn
+Pillow
+numpy

@@ -53,8 +53,8 @@ class SurvivalPredictionView(APIView):
 
             # Assuming the model outputs 0 for 'Deceased' and 1 for 'Living'
             # and predict_proba returns [prob_deceased, prob_living]
-            predicted_class = "Living" if prediction == 1 else "Deceased"
-            class_probability = probability[1] if predicted_class == "Living" else probability[0]
+            predicted_class = "Living" if prediction == 0 else "Deceased"
+            class_probability = probability[0] if predicted_class == "Living" else probability[1]
 
             response_data = {
                 "prediction": predicted_class,

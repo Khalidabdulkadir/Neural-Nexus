@@ -66,14 +66,17 @@ class ImagePredictionView(APIView):
 
         try:
             prediction = model.predict(processed_image)
-            confidence = float(np.max(prediction))
-            predicted_class_index = np.argmax(prediction)
-            predicted_class_name = CLASS_NAMES[predicted_class_index]
+
+            # Handle binary sigmoid output
+            prob = float(prediction[0][0])
+            predicted_class_name = "malignant" if prob >= 0.5 else "benign"
+            confidence = prob if prob >= 0.5 else 1 - prob
 
             return Response(
                 {
                     "prediction": predicted_class_name,
-                    "confidence": round(confidence, 4)
+                    "confidence": round(confidence, 4),
+                    "raw_output": round(prob, 4)
                 },
                 status=status.HTTP_200_OK
             )
@@ -82,4 +85,5 @@ class ImagePredictionView(APIView):
                 {"error": f"Prediction failed: {e}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
 
